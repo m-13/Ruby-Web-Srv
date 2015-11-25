@@ -1,9 +1,8 @@
 
 
 class HttpResponse
-
 		attr_reader :response , :statusLine , :responseHeaders , :responseBody , :httpRequest
-
+		
 	def initialize(httpRequest)
 		@httpRequest = httpRequest
 		case httpRequest.requestMethod
@@ -44,9 +43,8 @@ class HttpResponse
 			@statusLine = httpRequest.requestVersion+" "+"501"+"Not Implemented"
 			@responseHeaders=""
 			@responseBody="<H1>This functionality is still not implemented on the server</H1>"
-
 		end
-
+		
 		@response = statusLine+"\n"+responseHeaders+"\r\n"+"\r\n"+responseBody
 	end
 
@@ -57,7 +55,7 @@ class HttpResponse
 			@responseBody = content
 		end
 	end
-
+	
 	def resourceAvailable?
 		if(File.file?(httpRequest.requestURI.sub("/","")))
 			return true
@@ -70,6 +68,5 @@ class HttpResponse
 		#TODO: change method to check for preconditions on headers
 		return true
 	end
-
+	
 end
-
