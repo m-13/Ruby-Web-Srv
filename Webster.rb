@@ -7,11 +7,8 @@ server = TCPServer.new("localhost", 13131)
 while true do
 	Thread.start(server.accept) do |client|
 		request = HTTPRequest.new(client.gets)
-		print request.requestString
-		# response = request.process
-		client.puts "#{request.process.responseString}"
-	  puts "#{request.process.responseString}\n from webServer"
-
+		print request.requestStringprint "#{request.process.responseString}\n"
+		client.print "#{request.process.responseString}"
 		client.close
 	end
 end

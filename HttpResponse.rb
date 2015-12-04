@@ -1,5 +1,3 @@
-
-
 class HttpResponse
 		attr_accessor :responseString , :statusLine , :responseHeaders , :responseBody , :httpRequest
 

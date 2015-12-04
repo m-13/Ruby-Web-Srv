@@ -7,7 +7,6 @@ class OrderController
   end
 
   def viewOrders(page=nil, offset=nil)
-
   end
 
   def viewOrder(id)
@@ -17,7 +16,6 @@ class OrderController
       rs = pst.execute id
       id, name, price = rs.fetch
       result = "Id:#{id} Name:#{name} Price:#{price}"
-      # puts "#{result}"
     rescue Mysql::Error => er
       puts er
     ensure

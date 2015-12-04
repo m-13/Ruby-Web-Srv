@@ -5,15 +5,14 @@ class HTTPRequest
 	def initialize(request)
 		@requestString = request
 		header, @requestBody = requestString.split("\r\n",2) unless requestString.empty?
+		puts "#{header}"
+		puts "#{requestBody}"
 		requestLine, @requestHeaders = header.split("\n",2) unless header.empty?
 		@requestMethod, @requestURI , @requestVersion = requestLine.split(" ",3) unless requestLine.empty?
 	end
 
 	def process
    return GETdbResponse.new(self)
-	#  response =  GETdbResponse.new(self)
-	#  print response.responseString
-	# return response
 	end
 
 end
