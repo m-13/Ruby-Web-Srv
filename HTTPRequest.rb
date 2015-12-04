@@ -1,7 +1,7 @@
-require_relative 'HttpResponse'
+require_relative 'GETdbResponse'
 
 class HTTPRequest
-	attr_reader :requestString , :requestMethod , :requestURI , :requestVersion , :requestHeaders, :requestBody
+	attr_reader :requestString , :requestMethod , :requestURI , :requestVersion , :requestHeaders, :requestBody , :response
 	def initialize(request)
 		@requestString = request
 		header, @requestBody = requestString.split("\r\n",2) unless requestString.empty?
@@ -10,8 +10,10 @@ class HTTPRequest
 	end
 
 	def process
-	 return HttpResponse.new(self)
+   return GETdbResponse.new(self)
+	#  response =  GETdbResponse.new(self)
+	#  print response.responseString
+	# return response
 	end
-	
-end
 
+end
