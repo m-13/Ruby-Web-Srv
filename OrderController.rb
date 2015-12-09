@@ -2,37 +2,21 @@
 
   class OrderController
 
-    def viewOrders(par = nil)
-      # puts "#{par}"
+    def viewOrders(param = nil)
+      par = to_hash(param)
       result = ""
-      error = false
       if par.empty?
-        # puts "Empty"
         ordersQuery = "SELECT * from orders ORDER BY id"
       else
-        page = nil
-        no = nil
-        page = par["page"].to_i unless par["page"].nil?
-        no = par["no"].to_i unless par["no"].nil?
-        if(no.nil?)
-          no = 10
-        end
-        if(page.nil?)
-          page = 1
-        end
-        # puts "#{page} #{no} before start"
+        page = (par["page"] || 1).to_i
+        no = (par["no"] || 10).to_i
         start = (10*(page-1))
-        # puts "#{start}"
         range = start + no
-        # puts "#{range}"
         ordersQuery = "SELECT * from orders ORDER BY id LIMIT #{start} , #{range}"
-        # puts "#{ordersQuery}"
       end
       connection  = createConnection
-      # puts connection.get_server_info
       begin
         rs = connection.query ordersQuery
-        # puts "#{rs}"
         rs.each do |row|
           result = result + "#{row[0]} #{row[1]} #{row[2]}\n"
         end
@@ -41,11 +25,7 @@
       ensure
         connection.close if connection
       end
-      if error
-        return "Error in URL"
-      else
-        return result
-      end
+      return result
     end
 
     def viewOrder(id)
@@ -73,5 +53,17 @@
         puts er
         return nil
       end
+    end
+
+    def to_hash(param)
+      params = Hash.new
+      unless param.nil?
+        p = param.split("&")
+        p.each do |element|
+          e = element.split("=")
+          params[e[0]] = e[1]
+        end
+      end
+      return params
     end
   end
