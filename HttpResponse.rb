@@ -1,72 +1,32 @@
-
-
 class HttpResponse
-		attr_reader :response , :statusLine , :responseHeaders , :responseBody , :httpRequest
-		
-	def initialize(httpRequest)
-		@httpRequest = httpRequest
-		case httpRequest.requestMethod
-		when "GET"
-			httpGetResponse
-		else
-			createResponse(501)
-		end
-	end
+		attr_reader  :version , :statusCode , :statusMsg , :headers , :body
 
-	def httpGetResponse
-		if(resourceAvailable?)
-			if(conditionsMatch?)
-				createResponse(200)
-			else
-				createResponse(304)
-			end
-		else 
-			createResponse(404)
-		end
-	end
-
-	def createResponse(statusCode)
-		case statusCode
+	def initialize(httpRequest , code , response=nil)
+		@version = httpRequest.version
+		@statusCode = code
+		@headers = ""
+		case code
 		when 200
-			@statusLine = httpRequest.requestVersion+" "+"200"+" "+"Ok"
-			@responseHeaders=""
-			fetchResponseBody
-		when 302
-			@statusLine = httpRequest.requestVersion+" "+"304"+"Not Modified"
-			@responseHeaders=""
-			@responseBody=""
+			@statusMsg = "Ok"
+			@body = response
 		when 404
-			@statusLine = httpRequest.requestVersion+" "+"404"+" "+"Not Found"
-			@responseHeaders=""
-			@responseBody="<H1>Page not found</H1>"
-		else 
-			@statusLine = httpRequest.requestVersion+" "+"501"+"Not Implemented"
-			@responseHeaders=""
-			@responseBody="<H1>This functionality is still not implemented on the server</H1>"
-		end
-		
-		@response = statusLine+"\n"+responseHeaders+"\r\n"+"\r\n"+responseBody
-	end
-
-	def fetchResponseBody
-		if(resourceAvailable?)
-			resource = File.open(httpRequest.requestURI.sub("/",""),"r")
-			content = resource.read
-			@responseBody = content
-		end
-	end
-	
-	def resourceAvailable?
-		if(File.file?(httpRequest.requestURI.sub("/","")))
-			return true
-		else 
-			return false
+			@statusMsg = "Not Found"
+			@body = notFound
+		else
+			@code = 501
+			@statusMsg = "Not Implemented"
+			@body = "This is not implemented yet"
 		end
 	end
 
-	def conditionsMatch?
-		#TODO: change method to check for preconditions on headers
-		return true
+	def statusLine
+		"#{@version} #{@statusCode} #{@statusMsg}"
 	end
-	
+	def response
+		"#{statusLine}\r\n#{@headers}\r\n\r\n#{@body}"
+	end
+
+	private def notFound
+		"404 Not Found"
+	end
 end

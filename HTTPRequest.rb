@@ -1,17 +1,15 @@
-require_relative 'HttpResponse'
-
-class HTTPRequest
-	attr_reader :requestString , :requestMethod , :requestURI , :requestVersion , :requestHeaders, :requestBody
-	def initialize(request)
-		@requestString = request
-		header, @requestBody = requestString.split("\r\n",2) unless requestString.empty?
-		requestLine, @requestHeaders = header.split("\n",2) unless header.empty?
-		@requestMethod, @requestURI , @requestVersion = requestLine.split(" ",3) unless requestLine.empty?
+class HttpRequest
+	attr_reader :request , :method , :uri , :version , :headers, :body
+	def initialize(attrib)
+		@request = attrib[:request]
+		@method  = attrib[:method]
+		@uri = attrib[:uri]
+		@version = attrib[:version]
+		@headers = attrib[:headers]
+		@body = attrib[:body]
 	end
 
-	def process
-	 return HttpResponse.new(self)
+	def requestLine
+		"#{@method} #{@uri} #{@version}"
 	end
-	
 end
-
