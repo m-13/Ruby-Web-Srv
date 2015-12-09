@@ -6,7 +6,6 @@ class Dispatcher
   def process(httpRequest)
     #Create new Router
     router = Router.new
-    puts "Router created"
     # (string)controller and (string)action are fetched by the Router obj
     (controller , action , params) = router.get(httpRequest.method ,httpRequest.uri)
     if controller.nil?

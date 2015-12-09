@@ -16,7 +16,6 @@ class HttpRequestHandler
       @httpResponse = HttpResponse.new(@httpRequest, 404)
     else
       @httpResponse = HttpResponse.new(@httpRequest,200, response)
-      puts "HttpResponse Created"
     end
   end
 end
