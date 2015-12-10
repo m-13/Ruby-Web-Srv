@@ -1,4 +1,4 @@
-require_relative 'HttpRequest'
+require_relative 'Models/HttpRequest'
 
 class HttpRequestParser
   def parse(request)

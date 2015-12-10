@@ -1,9 +1,9 @@
 require_relative 'HttpRequestParser'
 require_relative 'Dispatcher'
-require_relative 'HttpResponse'
+require_relative 'Models/HttpResponse'
 
 class HttpRequestHandler
-  attr_accessor :httpRequest, :httpResponse , :dispatcher
+  attr_reader :httpRequest, :httpResponse 
   def initialize(request)
     parser = HttpRequestParser.new
     @httpRequest = parser.parse(request)
@@ -13,7 +13,8 @@ class HttpRequestHandler
     @dispatcher  = Dispatcher.new
     response = @dispatcher.process(@httpRequest)
     if response.nil?
-      @httpResponse = HttpResponse.new(@httpRequest, 404)
+      response = @dispatcher.responseNotFound
+      @httpResponse = HttpResponse.new(@httpRequest, 404, response)
     else
       @httpResponse = HttpResponse.new(@httpRequest,200, response)
     end

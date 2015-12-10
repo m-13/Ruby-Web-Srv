@@ -11,7 +11,7 @@ class HttpResponse
 			@body = response
 		when 404
 			@statusMsg = "Not Found"
-			@body = notFound
+			@body = response
 		else
 			@code = 501
 			@statusMsg = "Not Implemented"

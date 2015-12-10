@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>
+      Orders
+    </title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+      </tr>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.name %></td>
+        <td><%= order.price %><td>
+      </tr>
+    <% end %>
+    </table>
+  </body>
+</html>
